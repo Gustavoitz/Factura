@@ -1,0 +1,53 @@
+<?php
+
+include_once("Cservicios.php");
+$conexion = $objeto->connectDB();
+$objconsulta=new cCliente;
+$result=$objconsulta->Mostrar_todo($conexion);
+?>
+
+	<head>
+		<title>HTML Base</title>
+		<link rel="stylesheet" href="css/estilos.css">
+	</head>
+	<body>
+		<h1>Informe de Datos Colectivos</h1>
+		<navbar id="menu-principal">
+			<a href="">Primera Opción</a>
+
+			<a href="">Segunda Opción</a>
+		</navbar>
+		<h2>Listado</h2>
+		<table width="905" border="1" align="center">
+			<thead>
+				<tr>
+					<th>Cédula</th>
+					<th>Nombres</th>
+					<th>Apellidos</th>
+					<th>Dirección</th>
+					<th>Email</th>
+					<th>Celular</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php while ($row=mysqli_fetch_array($result)){ ?>
+
+				<tr>
+					<td><?php echo $row['cedula'] ?></td>
+					<td><?php echo $row['nombres'] ?></td>
+					<td><?php echo $row['apellidos'] ?></td>
+					<td><?php echo $row['direccion'] ?></td>
+					<td><?php echo $row['email'] ?></td>
+					<td><?php echo $row['celular'] ?></td>
+				</tr>
+
+			</tbody>
+		</table>
+  <?php } ?>
+
+
+		<footer>
+			Derechos Reservados
+		</footer>
+	</body>
+</html>
