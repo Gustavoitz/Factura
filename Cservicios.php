@@ -7,7 +7,7 @@ class cCliente
     "gustavorm-gustavorm.i.aivencloud.com",
     "avnadmin",
     getenv('DB_PASSWORD'),
-    "facturas",
+    "defaultdb",
     25926
 );
         if ($conexion->connect_error) die("conexion fallida " . $conexion->connect_error);

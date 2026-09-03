@@ -4,7 +4,7 @@ $conexion = new mysqli(
     "gustavorm-gustavorm.i.aivencloud.com",
     "avnadmin",
     getenv('DB_PASSWORD'),
-    "facturas",
+    "defaultdb",
     25926
 ); if($conexion->connect_error)die("Conexión fallida: ".$conexion->connect_error); $conexion->set_charset("utf8"); $numero=$_POST['numero_factura']; $result=$conexion->query("CALL consultar_factura('$numero')"); if(!$result)die("Error: ".$conexion->error);
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><title>Productos de la Factura</title><link rel="stylesheet" href="css/estilos.css"></head><body><h2 align="center">PRODUCTOS DE LA FACTURA <?php echo htmlspecialchars($numero); ?></h2><table width="750" border="1" align="center"><thead><tr><th>Código</th><th>Producto</th><th>Cantidad</th><th>Precio Unitario</th><th>Subtotal</th></tr></thead><tbody><?php $total=0; if($result->num_rows){while($row=$result->fetch_assoc()){ $total += $row['subtotal']; ?><tr><td><?php echo $row['codigo']; ?></td><td><?php echo $row['nombre']; ?></td><td><?php echo $row['cantidad']; ?></td><td>$<?php echo $row['precio_unitario']; ?></td><td>$<?php echo $row['subtotal']; ?></td></tr><?php }}else{ ?><tr><td colspan="5" align="center">No se encontraron productos para esta factura.</td></tr><?php } ?><tr><th colspan="4" align="right">TOTAL</th><th>$<?php echo number_format($total,2); ?></th></tr></tbody></table><br/><div align="center"><a href="ingresar_factura.php">Nueva Consulta</a> | <a href="index.php">Regresar al Menú</a></div></body></html>
