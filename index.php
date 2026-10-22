@@ -18,6 +18,9 @@
   <tr><td align="center"><label><a href="ingresar_cedula2.php">Actualizar</a></label></td></tr>
 </table>
 <p></p>
+  <div align="center">
+    <a href="index.html">Pagina</a>
+  </div>
 </form>
 </body>
 </html>
