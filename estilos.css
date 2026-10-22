@@ -12,18 +12,10 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 46px;
+  font-size: 44px;
   font-weight: normal;
-  letter-spacing: 3px;
-  color: #1f3a6b;
-  margin-bottom: 0;
-}
-
-.subtitulo {
-  text-align: center;
-  font-style: italic;
-  color: #555;
-  border-bottom: 2px solid #1f3a6b;
+  letter-spacing: 2px;
+  border-bottom: 1px solid black;
   padding-bottom: 15px;
   margin-bottom: 30px;
 }
@@ -37,8 +29,7 @@ h1 {
 .row > div {
   float: left;
   padding: 15px;
-  border: 1px solid #1f3a6b;
-  border-radius: 8px;
+  border: 1px solid #444;
 }
 
 .col-1 { width: 8.33%; }
@@ -58,18 +49,16 @@ h1 {
 .col-6 > div {
   float: left;
   padding: 8px;
-  border: 1px solid #9fb3d1;
-  border-radius: 6px;
+  border: 1px solid #aaa;
 }
 
 h2, h3 {
   margin-top: 0;
   font-weight: normal;
-  color: #1f3a6b;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 p {
@@ -81,5 +70,32 @@ img {
   width: 100%;
   display: block;
   margin-bottom: 10px;
-  border-radius: 6px;
+}
+
+/* Celular: las columnas se ponen una debajo de otra */
+@media (max-width: 700px) {
+  body {
+    margin: 15px auto;
+    padding: 0 12px;
+  }
+
+  h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .row > div,
+  .col-6 > div {
+    float: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .col-6 {
+    display: block;
+  }
 }
