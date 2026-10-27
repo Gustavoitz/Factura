@@ -1,0 +1,20 @@
+Cambio necesario en TU conexion.php (la carpeta de atrás), para que la página no se caiga
+si la base de datos no responde. Tus otras páginas no se ven afectadas.
+
+1) Reemplaza el bloque de la contraseña por:
+
+if ($password === false || $password === '') {
+    if (defined('CONEXION_SILENCIOSA')) { $conexion = null; return; }
+    die("Error: la variable de entorno DB_PASSWORD no está definida.");
+}
+
+2) Reemplaza el bloque de la conexión por:
+
+if (!mysqli_real_connect($conexion, $host, $user, $password, $database, $port, NULL, MYSQLI_CLIENT_SSL)) {
+    if (defined('CONEXION_SILENCIOSA')) { $conexion = null; return; }
+    die("Error de conexión a Aiven: " . mysqli_connect_error());
+}
+
+Instalación: carpeta cuenta_clara dentro de paquete2 (junto a conexion.php).
+Base de datos: ejecuta base_de_datos.sql bloque por bloque. Requiere PHP 8.1 o superior.
+Cuenta de prueba (sin base de datos): usuario demo, contraseña 1234.
