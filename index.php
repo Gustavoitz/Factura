@@ -21,6 +21,9 @@
   <div align="center">
     <a href="index.html">Pagina</a>
   </div>
+    <div align="center">
+    <a href="cuenta_clara/index.php">Pagina</a>
+  </div>
 </form>
 </body>
 </html>
