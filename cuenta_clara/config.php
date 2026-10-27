@@ -1,35 +1,59 @@
 <?php
 session_start();
 
-/* La conexión a la base de datos viene de ../conexion.php (la carpeta de atrás).
-   Si ese archivo no existe, falta DB_PASSWORD o no se puede conectar, la página funciona
-   igual en modo de prueba: solo entran las cuentas demo (ver demo_cuentas() más abajo). */
+/* La conexión a la base de datos se hace aquí mismo, con los mismos datos que usan las demás
+   páginas del proyecto (Aiven) y la contraseña de la variable de entorno DB_PASSWORD.
+   Si no hay contraseña o no se puede conectar, la página funciona igual en modo de prueba:
+   solo entran las cuentas demo (ver demo_cuentas() más abajo). */
 
-// Devuelve la conexión de ../conexion.php o null si no hay base de datos (nunca lanza error).
+// Devuelve la conexión a la base de datos o null si no se pudo (nunca lanza error).
+// El motivo real del fallo queda en el log del servidor (error_log).
 function conectar(): ?mysqli {
     static $db = false;                 // se conecta una sola vez por visita
     if ($db !== false) return $db;
     $db = null;
 
-    $archivo = __DIR__ . '/../conexion.php';
     $clave = getenv('DB_PASSWORD');
-    if (!is_file($archivo) || $clave === false || $clave === '') return $db;   // conexion.php haría die()
+    if ($clave === false || $clave === '') {
+        error_log('cuenta_clara: la variable de entorno DB_PASSWORD no está definida');
+        return $db;
+    }
 
-    try {
-        ini_set('mysqli.connect_timeout', '3');
-        if (!defined('CONEXION_SILENCIOSA')) define('CONEXION_SILENCIOSA', true);
-        $conexion = null;
-        $nivel = error_reporting(0);
-        include $archivo;               // define $conexion
-        error_reporting($nivel);
-        if ($conexion instanceof mysqli) {
-            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);   // conexion.php lo apaga; aquí usamos excepciones
-            $db = $conexion;
+    $host   = getenv('DB_HOST') ?: 'gustavorm-gustavorm.i.aivencloud.com';
+    $user   = getenv('DB_USER') ?: 'avnadmin';
+    $nombre = getenv('DB_NAME') ?: 'defaultdb';
+    $puerto = (int)(getenv('DB_PORT') ?: 25926);
+
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);   // errores como excepciones
+    // Aiven exige conexión cifrada: primero con SSL; si el servidor no la ofrece, sin SSL.
+    foreach ([MYSQLI_CLIENT_SSL, 0] as $flags) {
+        try {
+            $c = mysqli_init();
+            $c->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+            $c->real_connect($host, $user, $clave, $nombre, $puerto, null, $flags);
+            $c->set_charset('utf8mb4');
+            return $db = $c;
+        } catch (Throwable $ex) {
+            error_log('cuenta_clara: no se pudo conectar (' . ($flags ? 'SSL' : 'sin SSL') . '): ' . $ex->getMessage());
         }
-    } catch (Throwable $ex) {
-        $db = null;
     }
     return $db;
+}
+
+// Ejecuta un CALL con parámetros y devuelve un objeto con ->ok (true si se ejecutó)
+// y ->result (el mysqli_result con las filas, o null si el procedimiento no devuelve filas).
+function llamar_procedimiento(mysqli $db, string $sql, array $params = []): object {
+    $stmt = $db->prepare($sql);
+    if ($params) {
+        $tipos = '';
+        foreach ($params as $p) $tipos .= is_int($p) ? 'i' : 's';
+        $stmt->bind_param($tipos, ...$params);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result() ?: null;
+    while ($stmt->more_results()) $stmt->next_result();   // un CALL deja un resultado extra pendiente
+    $stmt->close();
+    return (object)['ok' => true, 'result' => $result];
 }
 
 // Cuentas de prueba (no necesitan base de datos). Los ids son negativos para no chocar con los de la BD.

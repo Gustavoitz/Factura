@@ -24,6 +24,7 @@ if ($db = conectar()) {
         $fila  = $r->result ? $r->result->fetch_assoc() : null;
         $hayBD = $r->ok;
     } catch (Throwable $ex) {
+        error_log('cuenta_clara login: ' . $ex->getMessage());
         $hayBD = false;   // por ejemplo, los procedimientos todavía no existen
     }
 }
