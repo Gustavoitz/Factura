@@ -11,9 +11,9 @@ function volver(string $msg): void { $_SESSION['error'] = $msg; header('Location
 
 if ($usuario === '' || $password === '') volver('Escribe tu usuario y tu contraseña.');
 
-// La cuenta de prueba siempre está disponible, con o sin base de datos
-if (hash_equals(DEMO_USUARIO, $usuario) && hash_equals(DEMO_PASSWORD, $password)) {
-    iniciar_sesion('demo', -1, demo_nombre());
+// Las cuentas de prueba siempre están disponibles, con o sin base de datos
+if ($c = demo_buscar($usuario, $password)) {
+    iniciar_sesion('demo', $c['id'], $c);
 }
 
 // Base de datos (todo por procedimientos almacenados)

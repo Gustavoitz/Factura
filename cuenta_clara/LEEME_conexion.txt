@@ -17,4 +17,4 @@ if (!mysqli_real_connect($conexion, $host, $user, $password, $database, $port, N
 
 Instalación: carpeta cuenta_clara dentro de paquete2 (junto a conexion.php).
 Base de datos: ejecuta base_de_datos.sql bloque por bloque. Requiere PHP 8.1 o superior.
-Cuenta de prueba (sin base de datos): usuario demo, contraseña 1234.
+Cuentas de prueba (sin base de datos), todas con contraseña 1234: demo (Camila Torres), demo2 (Mateo Gómez), demo3 (Valentina Restrepo), demo4 (Santiago Herrera).
