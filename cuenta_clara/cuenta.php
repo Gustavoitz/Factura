@@ -6,7 +6,7 @@ $demo = $_SESSION['modo'] === 'demo';
 $abonos = []; $fallo = false;
 
 if ($demo) {
-    $abonos = demo_abonos();
+    $abonos = demo_abonos((int)$_SESSION['cliente_id']);
 } else {
     try {
         $db = conectar();
@@ -20,7 +20,16 @@ if ($demo) {
 $total = (int)array_sum(array_column($abonos, 'monto'));
 $n = count($abonos);
 
-$titulo = 'Mi cuenta · Cuenta';
+// Agrupa el historial por mes (ya viene del más reciente al más antiguo)
+$meses = [];
+foreach ($abonos as $a) {
+    $k = substr($a['fecha'], 0, 7);
+    $meses[$k]['titulo'] = $meses[$k]['titulo'] ?? mes_anio($a['fecha']);
+    $meses[$k]['suma']   = ($meses[$k]['suma'] ?? 0) + (int)$a['monto'];
+    $meses[$k]['filas'][] = $a;
+}
+
+$titulo = 'Mi cuenta · Gustavo Rivas';
 include 'cabecera.php';
 ?>
 <main>
@@ -33,26 +42,39 @@ include 'cabecera.php';
   <?php if ($demo): ?>
     <p class="aviso">Estás viendo la cuenta de prueba. Sus datos son de ejemplo.</p>
   <?php endif; ?>
-  <div class="balance">
-    <p>Total en tu cuenta</p>
-    <span class="total" id="total" data-total="<?= $total ?>"><?= pesos($total) ?></span>
-    <p><?= $n
-        ? $n . ($n === 1 ? ' abono' : ' abonos') . ' · último el ' . e(fecha_corta($abonos[0]['fecha']))
-        : 'Todavía no tienes abonos registrados.' ?></p>
-  </div>
 
-  <h2>Historial de abonos</h2>
-  <ul class="list">
-    <?php if (!$n): ?>
-      <li class="empty">Cuando hagas tu primer abono, aparecerá aquí.</li>
-    <?php endif; ?>
-    <?php foreach ($abonos as $a): ?>
-      <li>
-        <span><?= e(fecha_corta($a['fecha'])) ?></span>
-        <span class="m"><?= e($a['metodo']) ?></span>
-        <span class="v">+<?= pesos($a['monto']) ?></span>
-      </li>
-    <?php endforeach; ?>
-  </ul>
+  <div class="cuerpo">
+    <section class="saldo">
+      <p class="rotulo">Total en tu cuenta</p>
+      <span class="total" id="total" data-total="<?= $total ?>"><?= pesos($total) ?></span>
+      <?php if ($n): ?>
+        <p class="detalle"><?= $n . ($n === 1 ? ' abono' : ' abonos') ?></p>
+        <p class="detalle">Último abono: <?= e(fecha_corta($abonos[0]['fecha'])) ?></p>
+      <?php else: ?>
+        <p class="detalle">Todavía no tienes abonos registrados.</p>
+      <?php endif; ?>
+    </section>
+
+    <section class="historial">
+      <h2>Historial de abonos</h2>
+      <?php if (!$n): ?>
+        <p class="vacio">Cuando hagas tu primer abono, aparecerá aquí.</p>
+      <?php endif; ?>
+      <?php foreach ($meses as $mes): ?>
+      <div class="mes">
+        <div class="mes-cab"><h3><?= e($mes['titulo']) ?></h3><span><?= pesos($mes['suma']) ?></span></div>
+        <ul class="lista">
+          <?php foreach ($mes['filas'] as $a): ?>
+          <li>
+            <span class="f"><?= e(fecha_dia($a['fecha'])) ?></span>
+            <span class="m"><?= e($a['metodo']) ?></span>
+            <span class="v">+<?= pesos($a['monto']) ?></span>
+          </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php endforeach; ?>
+    </section>
+  </div>
   <?php endif; ?>
 <?php include 'pie.php'; ?>

@@ -1,6 +1,7 @@
 </main>
 
 <div id="loader" aria-live="polite">
+  <div class="sombra-loader" aria-hidden="true"></div>
   <div class="ld-text">Cargando tu cuenta…<div class="bar"><i></i></div></div>
 </div>
 <div id="logo" aria-hidden="true">

@@ -2,7 +2,7 @@
   const $ = s => document.querySelector(s);
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const logo = $('#logo'), slot = $('#slot'), loader = $('#loader'), SIZE = 120;
+  const logo = $('#logo'), slot = $('#slot'), loader = $('#loader'), SIZE = 160;
   const sinLoader = document.documentElement.classList.contains('sin-loader');
   let docked = false;
 
@@ -38,12 +38,13 @@
   });
 
   // Rellenar la cuenta de prueba
-  const demo = $('#usarDemo');
-  if (demo) demo.onclick = () => {
-    $('#usuario').value = demo.dataset.u;
-    $('#password').value = demo.dataset.p;
-    $('#password').focus();
-  };
+  document.querySelectorAll('.usarDemo').forEach(demo => {
+    demo.onclick = () => {
+      $('#usuario').value = demo.dataset.u;
+      $('#password').value = demo.dataset.p;
+      $('#password').focus();
+    };
+  });
 
   // Mostrar / ocultar contraseña
   const ver = $('#ver');
