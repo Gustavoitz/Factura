@@ -1,20 +1,19 @@
-Cambio necesario en TU conexion.php (la carpeta de atrás), para que la página no se caiga
-si la base de datos no responde. Tus otras páginas no se ven afectadas.
+Conexión a la base de datos de cuenta_clara
+==========================================
 
-1) Reemplaza el bloque de la contraseña por:
+cuenta_clara ya NO necesita conexion.php. Se conecta sola (config.php, función conectar())
+con los mismos datos que usan las demás páginas del proyecto:
 
-if ($password === false || $password === '') {
-    if (defined('CONEXION_SILENCIOSA')) { $conexion = null; return; }
-    die("Error: la variable de entorno DB_PASSWORD no está definida.");
-}
+  host    gustavorm-gustavorm.i.aivencloud.com   (variable opcional DB_HOST)
+  usuario avnadmin                               (variable opcional DB_USER)
+  base    defaultdb                              (variable opcional DB_NAME)
+  puerto  25926                                  (variable opcional DB_PORT)
+  clave   variable de entorno DB_PASSWORD        (obligatoria)
 
-2) Reemplaza el bloque de la conexión por:
+Si no hay clave o no conecta, la página sigue funcionando solo con las cuentas de prueba, y el
+motivo exacto queda en el log del servidor (error_log).
 
-if (!mysqli_real_connect($conexion, $host, $user, $password, $database, $port, NULL, MYSQLI_CLIENT_SSL)) {
-    if (defined('CONEXION_SILENCIOSA')) { $conexion = null; return; }
-    die("Error de conexión a Aiven: " . mysqli_connect_error());
-}
+Base de datos: ejecuta base_de_datos.sql bloque por bloque en defaultdb. Requiere PHP 8.1 o superior.
 
-Instalación: carpeta cuenta_clara dentro de paquete2 (junto a conexion.php).
-Base de datos: ejecuta base_de_datos.sql bloque por bloque. Requiere PHP 8.1 o superior.
-Cuentas de prueba (sin base de datos), todas con contraseña 1234: demo (Camila Torres), demo2 (Mateo Gómez), demo3 (Valentina Restrepo), demo4 (Santiago Herrera).
+Cuentas de prueba (sin base de datos), todas con contraseña 1234:
+demo (Camila Torres), demo2 (Mateo Gómez), demo3 (Valentina Restrepo), demo4 (Santiago Herrera).
