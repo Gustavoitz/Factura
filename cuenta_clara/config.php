@@ -9,20 +9,20 @@ date_default_timezone_set('America/Bogota');   // la fecha de cada abono se guar
 
 // Devuelve la conexión a la base de datos o null si no se pudo (nunca lanza error).
 // El motivo real del fallo queda en el log del servidor (error_log).
-function conectar(): ?mysqli {
-    static $db = false;                 // se conecta una sola vez por visita
-    if ($db !== false) return $db;
-    $db = null;
+function conectar(?string $baseDatos = null): ?mysqli {
+    static $cache = [];                 // una conexión por base de datos y por visita
+    $nombre = $baseDatos ?: (getenv('DB_NAME') ?: 'defaultdb');
+    if (array_key_exists($nombre, $cache)) return $cache[$nombre];
+    $cache[$nombre] = null;
 
     $clave = getenv('DB_PASSWORD');
     if ($clave === false || $clave === '') {
         error_log('cuenta_clara: la variable de entorno DB_PASSWORD no está definida');
-        return $db;
+        return null;
     }
 
     $host   = getenv('DB_HOST') ?: 'gustavorm-gustavorm.i.aivencloud.com';
     $user   = getenv('DB_USER') ?: 'avnadmin';
-    $nombre = getenv('DB_NAME') ?: 'defaultdb';
     $puerto = (int)(getenv('DB_PORT') ?: 25926);
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);   // errores como excepciones
@@ -33,12 +33,17 @@ function conectar(): ?mysqli {
             $c->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
             $c->real_connect($host, $user, $clave, $nombre, $puerto, null, $flags);
             $c->set_charset('utf8mb4');
-            return $db = $c;
+            return $cache[$nombre] = $c;
         } catch (Throwable $ex) {
-            error_log('cuenta_clara: no se pudo conectar (' . ($flags ? 'SSL' : 'sin SSL') . '): ' . $ex->getMessage());
+            error_log('cuenta_clara: no se pudo conectar a ' . $nombre . ' (' . ($flags ? 'SSL' : 'sin SSL') . '): ' . $ex->getMessage());
         }
     }
-    return $db;
+    return null;
+}
+
+// Base de datos de Ahorros: una sola tabla (ahorros: id, saldo, ahorro), ver ahorros.sql.
+function conectar_ahorros(): ?mysqli {
+    return conectar(getenv('AHORROS_DB_NAME') ?: 'banco_ahorros');
 }
 
 // Ejecuta un CALL con parámetros y devuelve un objeto con ->ok (true si se ejecutó)

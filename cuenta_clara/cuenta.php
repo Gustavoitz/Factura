@@ -81,6 +81,7 @@ include 'cabecera.php';
 <main>
   <h1>Hola, <?= e($_SESSION['primer']) ?></h1>
   <p class="sub">Así va tu cuenta hasta hoy.</p>
+  <a class="secundario" href="ahorros.php">Ir a Ahorros</a>
   <?php if ($ok): ?>
     <p class="exito" role="status"><?= e($ok) ?></p>
   <?php endif; ?>

@@ -21,3 +21,8 @@ En las cuentas de prueba también se puede agregar dinero, pero esos abonos solo
 
 Agregar dinero (cuentas registradas): cuenta.php llama a sp_cuenta_agregar_abono. Ejecuta de nuevo ese bloque de
 base_de_datos.sql para tener la versión actualizada del procedimiento.
+
+AHORROS (pantalla ahorros.php, se abre desde "Ir a Ahorros" en la cuenta)
+Usa otra base de datos, banco_ahorros, con una sola tabla: ahorros (id, saldo, ahorro). Se crea con ahorros.sql.
+El procedimiento sp_ahorrar resta el valor del saldo y lo suma al ahorro. Avisa si el cliente no existe,
+no tiene saldo (cero) o el valor es mayor al saldo. Opcional: la variable AHORROS_DB_NAME cambia el nombre de la base.
