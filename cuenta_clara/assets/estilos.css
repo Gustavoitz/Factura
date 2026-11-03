@@ -113,6 +113,22 @@ code{font:inherit;font-weight:700;color:var(--tinta);background:var(--arena);pad
 .lista .v{font-weight:700;color:var(--verde);font-variant-numeric:tabular-nums}
 .vacio{margin:0;padding:18px 0;border-top:3px solid var(--tinta);color:var(--muted)}
 
+/* Agregar dinero */
+.izq{display:flex;flex-direction:column}
+.abonar{margin:0 28px 36px 0;padding:24px;background:var(--papel);border:2px solid var(--tinta)}
+.abonar h2{margin:0 0 18px}
+.abonar form>label:first-of-type{margin-top:0}
+.rapidos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.rapido{min-height:44px;padding:6px 12px;border:2px solid var(--tinta);border-radius:4px;background:none;color:var(--tinta);font-weight:600;cursor:pointer;transition:background .15s,color .15s}
+.rapido:hover{background:var(--arena)}
+.metodos{margin:18px 0 0;padding:0;border:0;min-width:0;display:flex;flex-wrap:wrap;gap:8px}
+.metodos legend{width:100%;padding:0;margin:0 0 6px;font-weight:600;font-size:15px}
+.metodos input{position:absolute;width:1px;min-height:0;height:1px;padding:0;border:0;opacity:0}
+.metodos label{margin:0;flex:1 1 0;min-width:96px;min-height:48px;display:flex;align-items:center;justify-content:center;padding:8px 10px;border:2px solid var(--tinta);border-radius:4px;background:#FBF9F3;font-weight:600;text-align:center;cursor:pointer;transition:background .15s,color .15s}
+.metodos input:checked+label{background:var(--tinta);color:var(--crema)}
+.metodos input:focus-visible+label{outline:3px solid var(--tinta);outline-offset:3px}
+.exito{margin:0 0 28px;padding:12px 16px;border-left:6px solid var(--verde);background:rgba(47,107,78,.12);color:var(--verde);font-weight:700;font-size:15px}
+
 /* Si ya se vio la animación en esta sesión, el logo arranca en su lugar */
 .sin-loader #loader{display:none}
 .sin-loader header,.sin-loader main,.sin-loader .marca{transition:none}
@@ -133,11 +149,14 @@ code{font:inherit;font-weight:700;color:var(--tinta);background:var(--arena);pad
   main{margin-left:var(--riel);padding:64px clamp(28px,5vw,80px) 72px}
   h1{font-size:clamp(38px,4.2vw,56px)}
   .hoja,.saldo{margin:0 0 72px 0}
+  .abonar{margin:0 0 72px 0}
 }
 @media (min-width:1100px){
   .acceso{grid-template-columns:minmax(0,1fr) 460px;gap:64px;padding-top:6vh}
   .cuerpo{grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:104px;align-items:start}
-  .saldo{position:sticky;top:48px}
+}
+@media (min-width:1100px) and (min-height:900px){
+  .izq{position:sticky;top:48px}
 }
 
 /* Móvil */
@@ -146,6 +165,7 @@ code{font:inherit;font-weight:700;color:var(--tinta);background:var(--arena);pad
   main{padding:88px 16px 40px}
   .hoja{padding:22px 18px}
   .saldo{padding:22px}
+  .abonar{padding:20px 18px}
   .lista li{grid-template-columns:1fr auto;gap:2px 12px;padding:12px 0}
   .lista .f{grid-column:1;grid-row:1}
   .lista .m{grid-column:1;grid-row:2;font-size:14px}

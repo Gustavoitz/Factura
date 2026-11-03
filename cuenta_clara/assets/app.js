@@ -46,6 +46,16 @@
     };
   });
 
+  // Agregar dinero: puntos de miles mientras escribe y montos rápidos
+  const monto = $('#monto');
+  if (monto) {
+    const miles = v => v.replace(/\D/g, '').replace(/^0+/, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    monto.addEventListener('input', () => { monto.value = miles(monto.value); });
+    document.querySelectorAll('.rapido').forEach(b => {
+      b.onclick = () => { monto.value = miles(b.dataset.m); };
+    });
+  }
+
   // Mostrar / ocultar contraseña
   const ver = $('#ver');
   if (ver) ver.onclick = () => {

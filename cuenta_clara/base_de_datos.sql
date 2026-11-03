@@ -57,6 +57,8 @@ BEGIN
     ORDER BY fecha DESC, id DESC;
 END;
 
+-- Agregar dinero: la pantalla "Agregar dinero" de cuenta.php llama a este procedimiento.
+-- (Si ya tenías creada la versión anterior, vuelve a ejecutar solo este bloque para actualizarla.)
 DROP PROCEDURE IF EXISTS sp_cuenta_agregar_abono;
 CREATE PROCEDURE sp_cuenta_agregar_abono(
     IN p_cliente_id INT,
@@ -65,6 +67,10 @@ CREATE PROCEDURE sp_cuenta_agregar_abono(
     IN p_monto      DECIMAL(12,0)
 )
 BEGIN
+    IF p_monto IS NULL OR p_monto <= 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El monto del abono debe ser mayor que cero';
+    END IF;
+
     INSERT INTO cuenta_abonos (cliente_id, fecha, metodo, monto)
     VALUES (p_cliente_id, p_fecha, p_metodo, p_monto);
 END;

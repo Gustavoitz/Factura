@@ -52,7 +52,7 @@ include 'cabecera.php';
   <section class="acceso">
     <div class="intro">
       <h1>Crea tu cuenta</h1>
-      <p class="sub">Regístrate para consultar tu saldo y tus abonos.</p>
+      <p class="sub">Regístrate para consultar tu saldo, agregar dinero y ver tus abonos.</p>
     </div>
     <div class="hoja">
       <form action="registro.php" method="post">

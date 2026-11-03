@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');   // la fecha de cada abono se guarda en hora de Colombia
 
 /* La conexión a la base de datos se hace aquí mismo, con los mismos datos que usan las demás
    páginas del proyecto (Aiven) y la contraseña de la variable de entorno DB_PASSWORD.
@@ -75,22 +76,6 @@ function demo_cuentas(): array {
             ['fecha' => '2026-09-26', 'metodo' => 'Transferencia', 'monto' => 110000],
             ['fecha' => '2026-09-12', 'metodo' => 'Efectivo',      'monto' => 55000],
          ]],
-        ['id' => -3, 'usuario' => 'demo3', 'password' => '1234', 'nombres' => 'Valentina', 'apellidos' => 'Restrepo',
-         'abonos' => [
-            ['fecha' => '2026-10-26', 'metodo' => 'Transferencia', 'monto' => 300000],
-            ['fecha' => '2026-10-12', 'metodo' => 'Nequi',         'monto' => 85000],
-            ['fecha' => '2026-10-03', 'metodo' => 'Efectivo',      'monto' => 120000],
-            ['fecha' => '2026-09-21', 'metodo' => 'Transferencia', 'monto' => 250000],
-            ['fecha' => '2026-09-07', 'metodo' => 'Nequi',         'monto' => 65000],
-            ['fecha' => '2026-08-28', 'metodo' => 'Efectivo',      'monto' => 140000],
-            ['fecha' => '2026-08-09', 'metodo' => 'Transferencia', 'monto' => 180000],
-            ['fecha' => '2026-07-22', 'metodo' => 'Nequi',         'monto' => 95000],
-            ['fecha' => '2026-07-04', 'metodo' => 'Efectivo',      'monto' => 210000],
-         ]],
-        ['id' => -4, 'usuario' => 'demo4', 'password' => '1234', 'nombres' => 'Santiago',  'apellidos' => 'Herrera',
-         'abonos' => [
-            ['fecha' => '2026-10-15', 'metodo' => 'Efectivo',      'monto' => 50000],
-         ]],
     ];
 }
 
@@ -114,12 +99,37 @@ function demo_reservado(string $usuario): bool {
 function demo_abonos(int $id): array {
     foreach (demo_cuentas() as $c) {
         if ($c['id'] === $id) {
-            $a = $c['abonos'];
+            // Los abonos hechos en esta sesión van primero para que, en la misma fecha, salgan arriba
+            $a = array_merge(array_reverse($_SESSION['demo_abonos'][$id] ?? []), $c['abonos']);
             usort($a, fn($x, $y) => strcmp($y['fecha'], $x['fecha']));
             return $a;
         }
     }
     return [];
+}
+
+// ---- Agregar dinero (abonos) ----
+const ABONO_MAXIMO = 50000000;   // tope por abono, en pesos
+
+function metodos_abono(): array {
+    return ['Transferencia', 'Efectivo', 'Nequi'];
+}
+
+// Convierte lo que escribió el cliente ("150.000", "$ 150000") en pesos enteros.
+// Devuelve null si no es un número entero válido (por ejemplo, si trae coma o letras).
+function leer_monto(string $txt): ?int {
+    $limpio = str_replace(['.', ' ', '$'], '', trim($txt));
+    if ($limpio === '' || !ctype_digit($limpio) || strlen($limpio) > 12) return null;
+    return (int)$limpio;
+}
+
+// Token para que el formulario de abono solo se acepte desde nuestra propia página.
+function csrf_token(): string {
+    if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));
+    return $_SESSION['csrf'];
+}
+function csrf_valido($t): bool {
+    return !empty($_SESSION['csrf']) && is_string($t) && hash_equals($_SESSION['csrf'], $t);
 }
 
 function e($s): string {

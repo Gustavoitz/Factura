@@ -16,4 +16,8 @@ motivo exacto queda en el log del servidor (error_log).
 Base de datos: ejecuta base_de_datos.sql bloque por bloque en defaultdb. Requiere PHP 8.1 o superior.
 
 Cuentas de prueba (sin base de datos), todas con contraseña 1234:
-demo (Camila Torres), demo2 (Mateo Gómez), demo3 (Valentina Restrepo), demo4 (Santiago Herrera).
+demo (Camila Torres) y demo2 (Mateo Gómez).
+En las cuentas de prueba también se puede agregar dinero, pero esos abonos solo duran mientras la sesión esté abierta.
+
+Agregar dinero (cuentas registradas): cuenta.php llama a sp_cuenta_agregar_abono. Ejecuta de nuevo ese bloque de
+base_de_datos.sql para tener la versión actualizada del procedimiento.

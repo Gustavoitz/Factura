@@ -13,7 +13,7 @@ include 'cabecera.php';
   <section class="acceso">
     <div class="intro">
       <h1>Ingresa a tu cuenta</h1>
-      <p class="sub">Consulta tu saldo y el historial de tus abonos.</p>
+      <p class="sub">Consulta tu saldo, agrega dinero y revisa el historial de tus abonos.</p>
     </div>
     <div class="hoja">
       <form action="login.php" method="post">
