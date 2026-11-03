@@ -1,29 +1,49 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Gustavo Rivas Mestra</title>
-<link rel="stylesheet" href="css/estilos.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gustavo Rivas Mestra · Proyectos</title>
+<link rel="icon" href="cuenta_clara/assets/logo.png" type="image/png">
+<style>
+@font-face{font-family:'Archivo';src:url(cuenta_clara/assets/fonts/Archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+:root{--tinta:#1E1E23;--crema:#ECE6D7;--papel:#F6F2E8;--sombra:#C0B9AE;--muted:#5A564F}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font:400 17px/1.5 'Archivo',system-ui,sans-serif;background:var(--crema);color:var(--tinta)}
+main{max-width:760px;margin:0 auto;padding:56px 24px 48px}
+h1{margin:0 0 6px;font-stretch:125%;font-weight:800;letter-spacing:-.02em;font-size:clamp(28px,7vw,44px);line-height:1.1}
+.sub{margin:0 0 36px;color:var(--muted)}
+.proyectos{display:grid;gap:20px}
+.proyecto{display:block;padding:22px 24px;background:var(--papel);border:2px solid var(--tinta);color:inherit;text-decoration:none;box-shadow:6px 6px 0 var(--sombra);transition:transform .15s,box-shadow .15s}
+.proyecto:hover,.proyecto:focus-visible{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--sombra)}
+.proyecto:focus-visible{outline:3px solid var(--tinta);outline-offset:3px}
+.proyecto h2{margin:0 0 4px;font-stretch:125%;font-weight:800;letter-spacing:-.02em;font-size:22px}
+.proyecto p{margin:0 0 14px;color:var(--muted)}
+.ir{display:inline-block;min-height:44px;padding:9px 18px;background:var(--tinta);color:var(--crema);font-weight:600}
+@media (min-width:700px){.proyectos{grid-template-columns:repeat(3,1fr)}.proyecto{display:flex;flex-direction:column}.proyecto p{flex:1}.ir{align-self:flex-start}}
+</style>
 </head>
 <body>
-<form id="form1" name="form1" method="post" action="">
-<p>&nbsp;</p>
-<table width="215" border="1" align="center">
-  <tr><td width="205" align="center"><h2>Menú del Sistema</h2></td></tr>
-  <tr><td align="center"><label><a href="registrardatos.php">Registrar Cliente</a></label></td></tr>
-  <tr><td align="center"><label><a href="ingresar_cedula.php">Consultar Cliente</a></label></td></tr>
-  <tr><td align="center"><a href="registrarfactura.php">Registrar Factura</a></td></tr>
-  <tr><td align="center"><a href="ingresar_factura.php">Consultar Factura</a></td></tr>
-  <tr><td align="center"><a href="mostrartodasfacturas.php">Mostrar Facturas</a></td></tr>
-  <tr><td align="center"><label><a href="ingresar_cedula2.php">Actualizar</a></label></td></tr>
-</table>
-<p></p>
-  <div align="center">
-    <a href="index.html">Pagina</a>
+<main>
+  <h1>Gustavo Rivas Mestra</h1>
+  <p class="sub">Elige el proyecto que quieres abrir.</p>
+  <div class="proyectos">
+    <a class="proyecto" href="cuenta_clara/index.php">
+      <h2>App de banco</h2>
+      <p>Consulta tu saldo, agrega dinero y revisa tus abonos.</p>
+      <span class="ir">Abrir app</span>
+    </a>
+    <a class="proyecto" href="facturacion.php">
+      <h2>Facturaci&oacute;n</h2>
+      <p>Registra y consulta clientes y facturas.</p>
+      <span class="ir">Abrir sistema</span>
+    </a>
+    <a class="proyecto" href="index.html">
+      <h2>P&aacute;gina web</h2>
+      <p>El Sistema Solar: un recorrido por nuestro vecindario en el espacio.</p>
+      <span class="ir">Abrir p&aacute;gina</span>
+    </a>
   </div>
-    <div align="center">
-    <a href="cuenta_clara/index.php">Pagina</a>
-  </div>
-</form>
+</main>
 </body>
 </html>

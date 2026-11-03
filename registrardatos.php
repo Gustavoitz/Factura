@@ -8,4 +8,4 @@
 <tr><td>Direccion</td><td><input type="text" name="direccion" /></td></tr>
 <tr><td>Email</td><td><input type="text" name="email" /></td></tr>
 <tr><td>Celular</td><td><input type="text" name="celular" /></td></tr>
-</table><div align="center"><input type="submit" name="Submit" value="Guardar" /> <a href="index.php">Regresar</a></div></form></body></html>
+</table><div align="center"><input type="submit" name="Submit" value="Guardar" /> <a href="facturacion.php">Regresar</a></div></form></body></html>

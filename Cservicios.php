@@ -21,7 +21,7 @@ class cCliente
         $sql="CALL insertar_cliente('$cedula','$nombre','$apellidos','$direccion','$email','$celular')";
         if(!$conexion->query($sql)) die("Error al insertar los datos: ".$conexion->error);
         $conexion->close();
-        header('Location: index.php'); exit;
+        header('Location: facturacion.php'); exit;
     }
 
     function consultar_cliente($cedula)
@@ -49,7 +49,7 @@ class cCliente
         $sql="CALL actualizar_cliente('$cedula','$nombre','$apellidos','$direccion','$email','$celular')";
         if(!$conexion->query($sql)) die("Error al actualizar: ".$conexion->error);
         $conexion->close();
-        header('Location: index.php'); exit;
+        header('Location: facturacion.php'); exit;
     }
 
     function registrar_factura($numero,$cedula,$fecha,$codigo1,$cantidad1,$codigo2,$cantidad2,$codigo3,$cantidad3,$codigo4,$cantidad4,$codigo5,$cantidad5)
@@ -68,7 +68,7 @@ class cCliente
             }
         }
         $conexion->close();
-        header('Location: index.php'); exit;
+        header('Location: facturacion.php'); exit;
     }
 }
 ?>
