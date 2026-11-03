@@ -12,6 +12,6 @@
     <div class="face back"><img src="assets/logo.png" alt=""></div>
   </div>
 </div>
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=<?= filemtime(__DIR__ . '/assets/app.js') ?>"></script>
 </body>
 </html>

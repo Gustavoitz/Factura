@@ -7,7 +7,7 @@
 <title><?= e($titulo ?? 'Mi cuenta · Gustavo Rivas') ?></title>
 <link rel="icon" href="assets/logo.png" type="image/png">
 <link rel="preload" href="assets/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/estilos.css">
+<link rel="stylesheet" href="assets/estilos.css?v=<?= filemtime(__DIR__ . '/assets/estilos.css') ?>">
 <script>try{if(sessionStorage.getItem('cc_loader'))document.documentElement.classList.add('sin-loader')}catch(e){}</script>
 <noscript><style>header,main,.marca{opacity:1!important}#loader,#logo{display:none}#slot{background:url(assets/logo.png) center/contain no-repeat}</style></noscript>
 </head>
